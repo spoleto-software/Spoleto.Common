@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>Spoleto.Common</AssemblyName>
+        <RootNamespace>Spoleto.Common</RootNamespace>
+        <Title>Spoleto.Common</Title>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <LangVersion>preview</LangVersion>
+    </PropertyGroup>
+
+    <!-- Include symbols for debugging -->
+    <PropertyGroup>
+        <!-- This command creates external file (snupkg) with .pdb next to nuget file (nupkg) -->
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <!-- Package info -->
+    <PropertyGroup>
+        <Product>Spoleto.Common library</Product>
+        <Description>The common library.</Description>
+        <PackageId>Spoleto.Common</PackageId>
+        <Authors>OlegNadymov;Spoleto-Software</Authors>
+        <Company>SPOLETO Software Development</Company>
+        <PackageIcon>MainIcon.jpg</PackageIcon>
+        <PackageProjectUrl>https://spoleto.ru</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/spoleto-software/Spoleto.Common</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>C# Common</PackageTags>
+        <Copyright>Copyright © $([System.DateTime]::Now.Year.ToString())</Copyright>
+        <PackageReleaseNotes></PackageReleaseNotes>
+        <Version>$([System.DateTime]::Now.AddYears(-2022).Year.ToString()).$([System.DateTime]::Now.ToString("MM.dd.HHmm"))</Version>
+        <AssemblyVersion>$([System.DateTime]::Now.AddYears(-2022).Year.ToString()).$([System.DateTime]::Now.ToString("MM.dd.HHmm"))</AssemblyVersion>
+        <FileVersion>$([System.DateTime]::Now.AddYears(-2022).Year.ToString()).$([System.DateTime]::Now.ToString("MM.dd.HHmm"))</FileVersion>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+        <None Include="Resources\MainIcon.jpg">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Text.Json" Version="7.0.1" />
+    </ItemGroup>
+
+</Project>

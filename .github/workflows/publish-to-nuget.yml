@@ -1,0 +1,67 @@
+name: Publish Packages
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'src/**'
+      - 'LICENSE'
+      - 'README.md'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  Build-Tests-Publish:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - id: logic_modified # check if the logic or LICENCE or README.md are changed
+      uses: pheel/path-watcher-action@v1
+      with:
+          paths: 'src/Spoleto.Common/**,LICENSE,README.md'
+
+    - id: logic_tests_modified # check if the logic or tests are changed
+      uses: pheel/path-watcher-action@v1
+      with:
+          paths: 'src/Spoleto.Common/**,src/*.Tests/**'
+  
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    - if: steps.logic_tests_modified.outputs.modified # run this step if there are changes in the logic or tests 
+      name: Test with the dotnet CLI
+      run: dotnet test --no-restore --logger "trx;LogFileName=test-results.trx"
+
+    - if: steps.logic_tests_modified.outputs.modified && ( success() || failure() ) # run this step if there are changes in the logic or tests and even previous step failed
+      name: Tests report
+      uses: dorny/test-reporter@v1.6.0
+      with:
+        name: Test results
+        path: '**/test-results.trx'
+        reporter: dotnet-trx
+
+    - if: steps.logic_modified.outputs.modified # run this step if there are changes in the logic or LICENCE or README.md
+      name: Publish to Nuget
+      uses: alirezanet/publish-nuget@v3.0.4
+      with:
+          # Filepath of the project to be packaged, relative to root of repository
+          PROJECT_FILE_PATH: src/Spoleto.Common/Spoleto.Common.csproj
+          # API key to authenticate with NuGet server
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          # Flag to toggle pushing symbols along with nuget package to the server, disabled by default
+          INCLUDE_SYMBOLS: true
+          # Flag to toggle git tagging, enabled by default
+          TAG_COMMIT: false
+
