@@ -103,44 +103,5 @@ namespace Spoleto.Common.Helpers
 
             return body;
         }
-
-        /// <summary>
-        /// Converts to a query string.
-        /// </summary>
-        public static string ToQueryString<T>(T body)
-        {
-            var bodyJson = ToJson(body);
-            var dictionaryAsObjectValues = FromJson<Dictionary<string, object>>(bodyJson);
-
-            var args = new List<string>();
-            foreach (var key in dictionaryAsObjectValues.Keys)
-            {
-                var jsonValue = (JsonElement)dictionaryAsObjectValues[key];
-                var objValue = FlattenJsonValue(jsonValue);
-                if (objValue is string str)
-                {
-                    args.Add($"{HttpUtility.UrlEncode(key)}={HttpUtility.UrlEncode(str)}");
-                }
-                else if (objValue is IEnumerable enumerable)
-                {
-                    foreach (string item in enumerable)
-                    {
-                        args.Add($"{HttpUtility.UrlEncode(key)}={HttpUtility.UrlEncode(item)}");
-                    }
-                }
-            }
-
-            return string.Join("&", args);
-        }
-
-        private static object FlattenJsonValue(JsonElement objValue)
-        {
-            return objValue.ValueKind switch
-            {
-                JsonValueKind.String => objValue.GetString(),
-                JsonValueKind.Array => objValue.EnumerateArray().Select(FlattenJsonValue),
-                _ => objValue.GetRawText()
-            };
-        }
     }
 }
