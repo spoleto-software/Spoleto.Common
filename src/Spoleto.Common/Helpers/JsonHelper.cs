@@ -44,12 +44,12 @@ namespace Spoleto.Common.Helpers
         /// <summary>
         /// Serialize object to Json format
         /// </summary>
-        public static string ToJson<T>(T body)
+        public static string ToJson<T>(T body, JsonSerializerOptions options = null)
         {
             if (body == null)
                 return null;
 
-            var bodyJson = JsonSerializer.Serialize(body, _defaultSerializerOptions);
+            var bodyJson = JsonSerializer.Serialize(body, options);
 
             return bodyJson;
         }
@@ -57,12 +57,14 @@ namespace Spoleto.Common.Helpers
         /// <summary>
         /// Deserialize object to Json format
         /// </summary>
-        public static T FromJson<T>(string bodyJson)
+        public static T FromJson<T>(string bodyJson, JsonSerializerOptions options = null)
         {
             if (string.IsNullOrEmpty(bodyJson))
                 return default;
 
-            var body = JsonSerializer.Deserialize<T>(bodyJson, _defaultSerializerOptions);
+            options ??= _defaultSerializerOptions;
+
+            var body = JsonSerializer.Deserialize<T>(bodyJson, options);
 
             return body;
         }
@@ -70,9 +72,11 @@ namespace Spoleto.Common.Helpers
         /// <summary>
         /// Serialize object to Json format
         /// </summary>
-        public static string ToJson(object body, Type inputType)
+        public static string ToJson(object body, Type inputType, JsonSerializerOptions options = null)
         {
-            var bodyJson = JsonSerializer.Serialize(body, inputType, _defaultSerializerOptions);
+            options ??= _defaultSerializerOptions;
+
+            var bodyJson = JsonSerializer.Serialize(body, inputType, options);
 
             return bodyJson;
         }
@@ -80,26 +84,33 @@ namespace Spoleto.Common.Helpers
         /// <summary>
         /// Deserialize object to Json format
         /// </summary>
-        public static object FromJson(string bodyJson, Type returnType)
+        public static object FromJson(string bodyJson, Type returnType, JsonSerializerOptions options = null)
         {
-            var body = JsonSerializer.Deserialize(bodyJson, returnType, _defaultSerializerOptions);
+            options ??= _defaultSerializerOptions;
+
+            var body = JsonSerializer.Deserialize(bodyJson, returnType, options);
+
             return body;
         }
 
         /// <summary>
         /// Serialize object to Json format
         /// </summary>
-        public static async Task ToJsonStreamAsync<T>(T body, Stream streamTo)
+        public static async Task ToJsonStreamAsync<T>(T body, Stream streamTo, JsonSerializerOptions options = null)
         {
-            await JsonSerializer.SerializeAsync(streamTo, body, _defaultSerializerOptions).ConfigureAwait(false);
+            options ??= _defaultSerializerOptions;
+
+            await JsonSerializer.SerializeAsync(streamTo, body, options).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Deserialize object to Json format
         /// </summary>
-        public static async Task<T> FromJsonStreamAsync<T>(Stream jsonStream)
+        public static async Task<T> FromJsonStreamAsync<T>(Stream jsonStream, JsonSerializerOptions options = null)
         {
-            var body = await JsonSerializer.DeserializeAsync<T>(jsonStream, _defaultSerializerOptions).ConfigureAwait(false);
+            options ??= _defaultSerializerOptions;
+
+            var body = await JsonSerializer.DeserializeAsync<T>(jsonStream, options).ConfigureAwait(false);
 
             return body;
         }
