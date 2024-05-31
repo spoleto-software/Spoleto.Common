@@ -49,6 +49,8 @@ namespace Spoleto.Common.Helpers
             if (body == null)
                 return null;
 
+            options ??= _defaultSerializerOptions;
+
             var bodyJson = JsonSerializer.Serialize(body, options);
 
             return bodyJson;
