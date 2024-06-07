@@ -24,7 +24,7 @@ namespace Spoleto.Common.JsonConverters
                 value = reader.GetString();
             }
 
-            foreach (var field in typeof(T).GetFields())
+            foreach (var field in typeof(T).GetFields(BindingFlags.Static | BindingFlags.Public))
             {
                 if (field.GetCustomAttribute<JsonEnumValueAttribute>()?.Value == value)
                 {
