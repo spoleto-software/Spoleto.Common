@@ -20,5 +20,43 @@ namespace Spoleto.Common.Tests
             Assert.That(fromJson, Is.EqualTo(str));
             Assert.That(json.Contains("Привет"), Is.True); // Cyrillic as is.
         }
+
+        [Test]
+        public void EnumWithJsonEnumValueAttribute()
+        {
+            // Arrange
+            var obj = new TestClass
+            {
+                Test = TestEnum.Two
+            };
+
+            // Act
+            var json = JsonHelper.ToJson(obj);
+            var fromJson = JsonHelper.FromJson<TestClass>(json);
+
+
+            // Assert
+            Assert.That(fromJson.Test, Is.EqualTo(obj.Test));
+            Assert.That(json.Contains("T2"), Is.True); // Cyrillic as is.
+        }
+
+        [Test]
+        public void EnumWithNullJsonEnumValueAttribute()
+        {
+            // Arrange
+            var obj = new TestClass
+            {
+                Test = TestEnum.Null
+            };
+
+            // Act
+            var json = JsonHelper.ToJson(obj);
+            var fromJson = JsonHelper.FromJson<TestClass>(json);
+
+
+            // Assert
+            Assert.That(fromJson.Test, Is.EqualTo(obj.Test));
+            Assert.That(json.Contains("null"), Is.True); // Cyrillic as is.
+        }
     }
 }
