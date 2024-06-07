@@ -14,11 +14,13 @@ namespace Spoleto.Common.Tests
             // Act
             var json = JsonHelper.ToJson(str);
             var fromJson = JsonHelper.FromJson<string>(json);
-
-
+                
             // Assert
-            Assert.That(fromJson, Is.EqualTo(str));
-            Assert.That(json.Contains("Привет"), Is.True); // Cyrillic as is.
+            Assert.Multiple(() =>
+            {
+                Assert.That(fromJson, Is.EqualTo(str));
+                Assert.That(json.Contains("Привет"), Is.True); // Cyrillic as is.
+            });
         }
 
         [Test]
@@ -33,11 +35,13 @@ namespace Spoleto.Common.Tests
             // Act
             var json = JsonHelper.ToJson(obj);
             var fromJson = JsonHelper.FromJson<TestClass>(json);
-
-
+                
             // Assert
-            Assert.That(fromJson.Test, Is.EqualTo(obj.Test));
-            Assert.That(json.Contains("T2"), Is.True); // Cyrillic as is.
+            Assert.Multiple(() =>
+            {
+                Assert.That(fromJson.Test, Is.EqualTo(obj.Test));
+                Assert.That(json.Contains("T2"), Is.True);
+            });
         }
 
         [Test]
@@ -52,11 +56,35 @@ namespace Spoleto.Common.Tests
             // Act
             var json = JsonHelper.ToJson(obj);
             var fromJson = JsonHelper.FromJson<TestClass>(json);
-
-
+                
             // Assert
-            Assert.That(fromJson.Test, Is.EqualTo(obj.Test));
-            Assert.That(json.Contains("null"), Is.True); // Cyrillic as is.
+            Assert.Multiple(() =>
+            {
+                Assert.That(fromJson.Test, Is.EqualTo(obj.Test));
+                Assert.That(json.Contains("null"), Is.True);
+            });
+        }
+
+        [Test]
+        public void EnumWithIntEnum()
+        {
+            // Arrange
+            var obj = new TestClass
+            {
+                TestIntEnum = TestIntEnum.Two
+            };
+
+            // Act
+            var json = JsonHelper.ToJson(obj);
+            var fromJson = JsonHelper.FromJson<TestClass>(json);
+                
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(fromJson.TestIntEnum, Is.EqualTo(obj.TestIntEnum));
+                Assert.That(json.Contains("200"), Is.True);
+                Assert.That(json.Contains("\"200\""), Is.False);
+            });
         }
     }
 }
