@@ -25,7 +25,7 @@ namespace Spoleto.Common.Helpers
         // mscorlib or System.Private.CoreLib
         private static readonly bool IsMscorlib = typeof(int).AssemblyQualifiedName.Contains("mscorlib");
 
-        private static readonly Dictionary<string, Type> TypeCache = [];
+        private static readonly Dictionary<string, Type> TypeCache = new();
 
         /// <summary>
         /// Deserializes the type.
