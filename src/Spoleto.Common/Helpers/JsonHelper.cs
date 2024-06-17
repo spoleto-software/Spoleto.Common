@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using System.Threading.Tasks;
-using System.Web;
+using Spoleto.Common.JsonConverters;
 
 namespace Spoleto.Common.Helpers
 {
@@ -29,6 +26,7 @@ namespace Spoleto.Common.Helpers
             };
 
             _defaultSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            _defaultSerializerOptions.Converters.Add(new JsonTypeConverter());
         }
 
         /// <summary>

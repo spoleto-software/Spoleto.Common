@@ -1,4 +1,5 @@
 ﻿using Spoleto.Common.Helpers;
+using Spoleto.Common.Tests.Objects;
 
 namespace Spoleto.Common.Tests
 {
@@ -84,6 +85,30 @@ namespace Spoleto.Common.Tests
                 Assert.That(fromJson.TestIntEnum, Is.EqualTo(obj.TestIntEnum));
                 Assert.That(json.Contains("200"), Is.True);
                 Assert.That(json.Contains("\"200\""), Is.False);
+            });
+        }
+        [Test]
+        public void EnumWithType()
+        {
+            // Arrange
+            var systemType = typeof(int);
+            var myType = typeof(TestClass);
+            var obj = new TestTypeClass
+            {
+                MyType = myType,
+                SystemType = systemType
+            };
+
+            // Act
+            var json = JsonHelper.ToJson(obj);
+            var fromJson = JsonHelper.FromJson<TestTypeClass>(json);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+
+                Assert.That(fromJson.MyType, Is.EqualTo(obj.MyType));
+                Assert.That(fromJson.SystemType, Is.EqualTo(obj.SystemType));
             });
         }
     }
