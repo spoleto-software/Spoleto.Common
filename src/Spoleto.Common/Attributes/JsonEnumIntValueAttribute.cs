@@ -15,7 +15,7 @@ namespace Spoleto.Common.Attributes
         /// Constructor.
         /// </summary>
         /// <param name="value">Int value, can be null.</param>
-        public JsonEnumIntValueAttribute(int value)
+        public JsonEnumIntValueAttribute(int? value)
         {
             Value = value;
         }
@@ -23,6 +23,6 @@ namespace Spoleto.Common.Attributes
         /// <summary>
         /// Gets the Json value for the enum item.
         /// </summary>
-        public int Value { get; }
+        public int? Value { get; }
     }
 }
