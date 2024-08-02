@@ -3,7 +3,7 @@
 namespace Spoleto.Common.Attributes
 {
     /// <summary>
-    /// The attribute to overrie Json representation using <see cref="JsonConverters.JsonEnumValueConverter{T}"/>.
+    /// The attribute to overrie Json representation using <see cref="JsonConverters.JsonEnumIntValueConverter{T}"/>.
     /// </summary>
     /// <remarks>
     ///  Designed for enums.
@@ -12,10 +12,17 @@ namespace Spoleto.Common.Attributes
     public class JsonEnumIntValueAttribute : Attribute
     {
         /// <summary>
-        /// Constructor.
+        /// Constructor for nullable value.
         /// </summary>
-        /// <param name="value">Int value, can be null.</param>
-        public JsonEnumIntValueAttribute(int? value)
+        public JsonEnumIntValueAttribute()
+        {
+        }
+
+        /// <summary>
+        /// Constructor for non-nullable value.
+        /// </summary>
+        /// <param name="value">Int value</param>
+        public JsonEnumIntValueAttribute(int value)
         {
             Value = value;
         }

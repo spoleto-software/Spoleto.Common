@@ -30,7 +30,7 @@ namespace Spoleto.Common.Tests
             // Arrange
             var obj = new TestClass
             {
-                Test = TestEnum.Two
+                Test = TestEnumValue.Two
             };
 
             // Act
@@ -51,7 +51,7 @@ namespace Spoleto.Common.Tests
             // Arrange
             var obj = new TestClass
             {
-                Test = TestEnum.Null
+                Test = TestEnumValue.Null
             };
 
             // Act
@@ -83,10 +83,36 @@ namespace Spoleto.Common.Tests
             Assert.Multiple(() =>
             {
                 Assert.That(fromJson.TestIntEnum, Is.EqualTo(obj.TestIntEnum));
-                Assert.That(json.Contains("200"), Is.True);
-                Assert.That(json.Contains("\"200\""), Is.False);
+                Assert.That(json, Does.Contain("200"));
+                Assert.That(json, Does.Not.Contain("\"200\""));
             });
         }
+
+        [Test]
+        public void EnumWithEnumIntValue()
+        {
+            // Arrange
+            var obj = new TestClass
+            {
+                TestEnumIntValue1 = TestEnumIntValue.Two,
+                TestEnumIntValue2 = TestEnumIntValue.Null
+            };
+
+            // Act
+            var json = JsonHelper.ToJson(obj);
+            var fromJson = JsonHelper.FromJson<TestClass>(json);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(fromJson.TestEnumIntValue1, Is.EqualTo(obj.TestEnumIntValue1));
+                Assert.That(fromJson.TestEnumIntValue2, Is.EqualTo(obj.TestEnumIntValue2));
+                Assert.That(json, Does.Contain("null"));
+                Assert.That(json, Does.Contain("200"));
+                Assert.That(json, Does.Not.Contain("\"200\""));
+            });
+        }
+
         [Test]
         public void EnumWithType()
         {

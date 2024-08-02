@@ -4,8 +4,8 @@ using Spoleto.Common.JsonConverters;
 
 namespace Spoleto.Common.Tests
 {
-    [JsonConverter(typeof(JsonEnumValueConverter<TestEnum>))]
-    public enum TestEnum
+    [JsonConverter(typeof(JsonEnumValueConverter<TestEnumValue>))]
+    public enum TestEnumValue
     {
         [JsonEnumValue("O1")]
         One,
