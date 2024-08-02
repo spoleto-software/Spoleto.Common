@@ -40,26 +40,44 @@ namespace Spoleto.Common.JsonConverters
                 }
             }
 
-            throw new JsonException($"Unknown enum element: {value}");
+            if (value == 0)
+            {
+                return default;
+            }
+
+            throw new JsonException($"Unknown enum '{typeof(T).Name}' element: {value}");
         }
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
-            var enumValue = GetEnumValue(value);
-
-            if (enumValue == null)
-                writer.WriteNullValue();
+            if (TryGetEnumValue(value, out var enumValue))
+            {
+                if (enumValue == null)
+                    writer.WriteNullValue();
+                else
+                    writer.WriteNumberValue(enumValue.Value);
+            }
             else
-                writer.WriteNumberValue(enumValue.Value);
+            {
+                writer.WriteNumberValue((int)(object)value);
+            }
         }
 
-        private int? GetEnumValue(Enum value)
+        private bool TryGetEnumValue(Enum value, out int? outValue)
         {
             var field = value.GetType().GetField(value.ToString());
 
-            return field.GetCustomAttribute<JsonEnumIntValueAttribute>() is JsonEnumIntValueAttribute attribute
+            if (field == null)
+            {
+                outValue = null;
+                return false;
+            }
+
+            outValue = field.GetCustomAttribute<JsonEnumIntValueAttribute>() is JsonEnumIntValueAttribute attribute
                 ? attribute.Value
                 : Convert.ToInt32(value);
+
+            return true;
         }
     }
 }

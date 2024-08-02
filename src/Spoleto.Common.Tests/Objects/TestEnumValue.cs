@@ -8,12 +8,12 @@ namespace Spoleto.Common.Tests
     public enum TestEnumValue
     {
         [JsonEnumValue("O1")]
-        One,
+        One = 1,
 
         [JsonEnumValue("T2")]
-        Two,
+        Two = 2,
 
         [JsonEnumValue(null)]
-        Null
+        Null = -1
     }
 }

@@ -19,6 +19,14 @@ namespace Spoleto.Common.JsonConverters
             {
                 value = null;
             }
+            else if (reader.TokenType == JsonTokenType.Number)
+            {
+                var numValue = reader.GetInt32();
+                if (numValue == 0)
+                    return default;
+
+                throw new JsonException($"Unknown enum '{typeof(T).Name}' element: {numValue}");
+            }
             else
             {
                 value = reader.GetString();
@@ -40,26 +48,39 @@ namespace Spoleto.Common.JsonConverters
                 }
             }
 
-            throw new JsonException($"Unknown enum element: {value}");
+            throw new JsonException($"Unknown enum '{typeof(T).Name}' element: {value}");
         }
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
-            var enumValue = GetEnumValue(value);
-
-            if (enumValue == null)
-                writer.WriteNullValue();
+            if (TryGetEnumValue(value, out var enumValue))
+            {
+                if (enumValue == null)
+                    writer.WriteNullValue();
+                else
+                    writer.WriteStringValue(enumValue);
+            }
             else
-                writer.WriteStringValue(enumValue);
+            {
+                writer.WriteNumberValue((int)(object)value);
+            }
         }
 
-        private string GetEnumValue(Enum value)
+        private bool TryGetEnumValue(Enum value, out string outValue)
         {
             var field = value.GetType().GetField(value.ToString());
 
-            return field.GetCustomAttribute<JsonEnumValueAttribute>() is JsonEnumValueAttribute attribute
+            if (field == null)
+            {
+                outValue = null;
+                return false;
+            }
+
+            outValue = field.GetCustomAttribute<JsonEnumValueAttribute>() is JsonEnumValueAttribute attribute
                 ? attribute.Value
                 : value.ToString();
+
+            return true;
         }
     }
 }

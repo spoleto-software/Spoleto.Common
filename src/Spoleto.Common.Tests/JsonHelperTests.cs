@@ -30,7 +30,7 @@ namespace Spoleto.Common.Tests
             // Arrange
             var obj = new TestClass
             {
-                Test = TestEnumValue.Two
+                Test1 = TestEnumValue.Two
             };
 
             // Act
@@ -40,7 +40,7 @@ namespace Spoleto.Common.Tests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(fromJson.Test, Is.EqualTo(obj.Test));
+                Assert.That(fromJson.Test1, Is.EqualTo(obj.Test1));
                 Assert.That(json.Contains("T2"), Is.True);
             });
         }
@@ -51,7 +51,8 @@ namespace Spoleto.Common.Tests
             // Arrange
             var obj = new TestClass
             {
-                Test = TestEnumValue.Null
+                Test1 = TestEnumValue.Null,
+                Test2 = TestEnumValue.Two
             };
 
             // Act
@@ -61,8 +62,11 @@ namespace Spoleto.Common.Tests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(fromJson.Test, Is.EqualTo(obj.Test));
-                Assert.That(json.Contains("null"), Is.True);
+                Assert.That(fromJson.Test1, Is.EqualTo(obj.Test1));
+                Assert.That(fromJson.Test2, Is.EqualTo(obj.Test2));
+
+                Assert.That(json, Does.Contain("null"));
+                Assert.That(json, Does.Contain("\"T2\""));
             });
         }
 
