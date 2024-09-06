@@ -141,5 +141,21 @@ namespace Spoleto.Common.Tests
                 Assert.That(fromJson.SystemType, Is.EqualTo(obj.SystemType));
             });
         }
+
+        [Test]
+        public void EnumWithStrInt()
+        {
+            // Arrange
+            var json = "{\"TestIntEnumAsStrInt\": \"200\"}";
+
+            // Act
+            var fromJson = JsonHelper.FromJson<TestClass>(json);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(fromJson.TestIntEnumAsStrInt, Is.EqualTo(TestIntEnum.Two));
+            });
+        }
     }
 }

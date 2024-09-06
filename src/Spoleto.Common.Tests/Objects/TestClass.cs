@@ -19,5 +19,8 @@ namespace Spoleto.Common.Tests
 
         [JsonConverter(typeof(JsonEnumIntValueConverter<TestEnumIntValue>))]
         public TestEnumIntValue TestEnumIntValue2 { get; set; }
+
+        [JsonConverter(typeof(JsonStrIntEnumConverter<TestIntEnum>))]
+        public TestIntEnum TestIntEnumAsStrInt { get; set; }
     }
 }
