@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.Unicode;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Spoleto.Common.Helpers
@@ -49,7 +44,7 @@ namespace Spoleto.Common.Helpers
         /// <summary>
         /// Converts the given object to the string <see cref="Dictionary{String, String}"/>.
         /// </summary>
-        public static Dictionary<string,string> ToStringDictionary<T>(T body)
+        public static Dictionary<string, string> ToStringDictionary<T>(T body)
         {
             var bodyJson = JsonHelper.ToJson(body);
             var dictionaryAsObjectValues = JsonHelper.FromJson<Dictionary<string, object>>(bodyJson);
